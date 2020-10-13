@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" href="https://blm-fsmvu.github.io/305/images/icon192.png">
+  <title>Length Conversation </title>
+
+  <style>
+    /* CSS comment */
+    body {
+      max-width: 440px;
+    }
+
+    #inp {
+      width: 50px
+    }
+
+    #out {
+      font-size: 18px;
+      background: blue;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HTML comment: Modify all items marked xxx -->
+
+
+  <h2 id="title">Length Converter</h2> <!-- id referenced title.. -->
+  Inch
+
+  <input type=number id=inpCm value=0 onchange="inchToCm(this.number)">
+  &emsp;
+  Cm
+  <input type=number id=inpInch value=0 onchange="cmToInch(this.number)">
+  &emsp;
+
+
+  <hr />
+
+  <hr />
+  <p>Ref: <a href="https://www.w3schools.com/js/" target="NewTab">JS Tutorial</a>
+  </p>
+
+  <script>
+    "use strict";
+    // JavaScript comment
+    function cmToInch(number) {
+      document.getElementById("inpCm").number = number * 2.54;
+    }
+    function inchToCm(number) {
+      document.getElementById("inpInch").number = number * 0.393;
+    }
+    //global variable id is the HTML element with id
+    //const title = document.getElementById("title");
+    //title.innerText = document.title;
+    //sample.innerText = increment.toString();
+    //out.innerText = 0; increment();
+  </script>
+
+</body>
+
+</html>
