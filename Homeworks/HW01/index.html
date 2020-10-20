@@ -1,0 +1,109 @@
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="icon" sizes="192x192" href="/JS/images/JS.png">
+        <title>Make a Table </title>
+    
+      <style>
+        body { max-width: 440px; }
+        #sample { overflow-x: auto; }
+        table { border-collapse: collapse; }
+        th { color: blue; padding: 5px 5px; }
+        td { 
+            border: 1px solid blue; 
+            padding: 5px 5px; 
+            text-align: center; 
+            position: relative;
+        }
+        td:hover .tip {
+            visibility: visible;
+        }
+        td .tip {
+            visibility: hidden;
+            font-size: small;
+            background-color: blue;
+            color: white;
+            text-align: center;
+            padding: 5px 5px;
+            position: absolute;
+            left: 5px; 
+            top: 20px;
+        }
+      </style>
+    </head>
+
+<body>
+    <center>
+        <h2 id="title">Make a Table</h2>
+        
+        <p>Size: 
+        <select id="size" oninput="tableFromMenu()">
+            <option selected="">3x5</option>
+            <option>5x5</option>
+            <option>7x8</option>
+            <option>9x9</option>
+        </select></p>
+        
+        <table id="tablo"><tbody><tr><th></th><th>1</th><th>2</th></tr><tr><th>1</th><td>1,1<span class="tip">C1</span></td><td>1,2<span class="tip">C2</span></td></tr><tr><th>2</th><td>2,1<span class="tip">C3</span></td><td>2,2<span class="tip">C4</span></td></tr><tr><th>3</th><td>3,1<span class="tip">C5</span></td><td>3,2<span class="tip">C6</span></td></tr><tr><th>4</th><td>4,1<span class="tip">C7</span></td><td>4,2<span class="tip">C8</span></td></tr><tr><th>5</th><td>5,1<span class="tip">C9</span></td><td>5,2<span class="tip">C10</span></td></tr><tr><th>6</th><td>6,1<span class="tip">C11</span></td><td>6,2<span class="tip">C12</span></td></tr><tr><th>7</th><td>7,1<span class="tip">C13</span></td><td>7,2<span class="tip">C14</span></td></tr><tr><th>8</th><td>8,1<span class="tip">C15</span></td><td>8,2<span class="tip">C16</span></td></tr><tr><th>9</th><td>9,1<span class="tip">C17</span></td><td>9,2<span class="tip">C18</span></td></tr><tr><th>10</th><td>10,1<span class="tip">C19</span></td><td>10,2<span class="tip">C20</span></td></tr></tbody></table>
+        
+        <p id="out" style="font-size:small">982 chars</p>
+        
+        <form oninput="tableFromInput()">
+          Rows: 
+          <input type="number" id="rows" style="width:40px" value="7">
+          Columns: 
+          <input type="number" id="cols" style="width:40px" value="8">
+          <br><br>
+          <input type="reset">
+          <input type="button" value="Make Table" onclick="tableFromInput()">
+        </form>
+        </center>
+    
+</body>
+<script>
+    
+"use strict";
+//June 8, 2018 MAE -- basis for 
+//https://maeyler.github.io/Visual-Mujam/
+//
+function makeRows(m, n) {
+    let row = "<th></th>";
+    for (let j = 1; j <= n; j++) 
+        row += "<th>"+j+"</th>";
+    let text = "<tr>"+row+"</tr>";
+    for (let i = 1; i <= m; i++) {
+       row = "<th>"+i+"</th>";
+       for (let j = 1; j <= n; j++) {
+          let p = n*(i-1)+j;
+          let s = "<span class=tip>C"+p+"</span>"
+          row += "<td>"+i+","+j+s+"</td>";
+       }
+       text += "<tr>"+row+"</tr>";
+    }
+    let t = text.length+" chars";
+    console.log("makeRows: "+m+"x"+n+" "+t);
+    tablo.innerHTML = text; out.innerText = t; 
+}
+function tableFromMenu() {
+    let [m, n] = size.value.split("x");
+    makeRows(m, n); //a[0], a[1]
+    rows.value = m;
+    cols.value = n;
+}
+function tableFromInput() {
+    let m = rows.value;
+    let n = cols.value;
+    makeRows(m, n);
+    size.value = m+"x"+n;
+}
+    title.innerText = document.title;
+    sample.innerText = makeRows.toString();
+    makeRows(3, 5);
+
+</script>
+
+
+
+</html>
