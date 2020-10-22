@@ -26,12 +26,30 @@
 <script src="https://maeyler.github.io/JS/sss/inspector.js"></script>
 <script src="chap4.js"></script>
 <script src="chap6.js"></script>
-
+<h2>Question 1 </h2>
 <h3>Journals that include WORK or WEEKEND </h3>
-<textarea id="data" name="w3review" rows="10" cols="70"></textarea>
+<textarea id="data" name="w3review" rows="10" cols="50"></textarea>
+<br/>
 <button onclick="GetJournals()">Show Journals</button>
-
 <p id="allEntry"></p>
+
+
+
+<br/>
+<h2>CM  <-> INCH CONVERTER WITH CLASS</h2>
+<p>
+  <label>cm</label>
+  <input id="inputCm" type="number" placeholder="Cm" oninput="LengthConverterFromCm(this.value)">
+</p>
+<p>
+<label>Inches</label>
+<input id="inputInch" type="number" placeholder="Inch" oninput="LengthConverterFromInch(this.value)">
+</p>
+<b>Sample code of Length Converter</b>
+<pre id=sample>This text is not shown. Why?</pre>
+
+<hr />
+
 <script>
 "use strict";
 class Chap4 extends Menu {
@@ -88,22 +106,30 @@ function init() {
 }
   
 
-    class Lenght {
+function LengthConverterFromInch(valueNumber) {
+  var number = Lenght.fromInch(valueNumber).cm;
+  document.getElementById("inputCm").value =number;
+}
+function LengthConverterFromCm(valueNumber) {
+  let number = new Lenght(valueNumber);
+  document.getElementById("inputInch").value =number.inch;
+}
+
+class Lenght {
   constructor(cm) {
     this.cm = cm;
   }
   get inch() {
-    return (this.cm * 0.39370).toFixed(1);
+    return this.cm * 0.39370;
   }
   set inch(value) {
-    this.celsius = (value / 0.39370).toFixed(1);
+    this.celsius = value / 0.39370;
   }
-
   static fromInch(value) {
-    return new Lenght((value / 0.39370).toFixed(1));
+    return new Lenght((value / 0.39370));
   }
-  
-}
+} 
+sample.innerText = LengthConverterFromCm.toString()+'\n' + LengthConverterFromInch.toString() +'\n' +  Lenght.toString();
 </script>
 </body>
 </html>
