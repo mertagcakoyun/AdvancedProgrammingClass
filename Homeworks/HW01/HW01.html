@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Make a Table </title>
+
+    <style>
+        body {
+            max-width: 600px;
+
+        }
+        #sample {
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            left: 100px;
+        }
+        th {
+            color: blue;
+            padding: 5px 5px;
+        }
+        td {
+            border: 1px solid blue;
+            padding: 20px 20px;
+            text-align: center;
+            position: relative;
+        }
+        td:hover .tip {
+            visibility: visible;
+        }
+        td .tip {
+            visibility: hidden;
+            font-size: small;
+            background-color: blue;
+            color: white;
+            text-align: center;
+            padding: 5px 5px;
+            position: absolute;
+            left: 5px;
+            top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+   
+    <center>
+        <h2 id=title></h2>
+
+
+        <table id="tablo"></table>
+
+        <p id=out style="font-size:small"></p>
+
+        <form oninput="tableFromInput()">
+
+        </form>
+    </center>
+
+    <hr />
+    <b>Sample code</b>
+    <pre id=sample></pre>
+    <hr />
+
+    <script>
+        "use strict";
+        function makeRows() {
+            const rowNum=8;
+            const L = [0.5, 1, 1.5, 2, 2.5, 3]
+            let p = []
+            for (let λ of L) { 
+                p.push(Math.exp(-λ).toFixed(4))
+            }
+            let row = "<th></th>";
+            for (let j = 0; j < L.length; j++) {
+                row += "<th> λ = " + L[j] + "</th>";
+            }
+            let text = "<tr>" + row + "</tr>";
+            for (let x = 0; x <= rowNum; x++) {
+                row = "<th>x= " + x + " </th>";
+                if (x != 0) {
+                    for (let i = 0; i < p.length; i++) {
+                        p[i] = ((L[i]* p[i]) / x).toFixed(4)
+                    }
+                }
+                for (let i of p) {
+                    row += "<td>" + i + "</td>";
+                }
+                text += "<tr>" + row + "</tr>";
+            }
+            let t = text.length + " chars";
+            tablo.innerHTML = text; out.innerText = t;
+        }
+        title.innerText = document.title;
+        sample.innerText = makeRows.toString();
+        makeRows();
+    </script>
+
+    
+ <h5>Created by Mert Agcakoyun</h5>
+ <h5>GitHub:mertagcakoyun</h5>
+</body>
+
+</html>
