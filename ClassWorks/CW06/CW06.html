@@ -39,7 +39,8 @@
 "use strict";
 // JavaScript comment
 function check() {
-fetch(url.value).then(x=>resp.innerText="Ok").catch(e=>resp.innerText=e)
+fetch(url.value).then(x=>resp.innerText="Ok")
+.catch(event=>resp.innerText="Failed to fetch!!")
 
 }
 function init() {
