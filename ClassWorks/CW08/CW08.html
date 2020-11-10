@@ -32,13 +32,12 @@ function fileSelect() {
 }
 function checkFiles(b) {
     let files = [...local.files]
-    let selectedFilesCount=0;
     let selectedFilesNames="\nselected files: \n"
     let isMatch = false
     let fileName = ""
 
     for(let f of files){
-        selectedFilesCount++;
+        
         selectedFilesNames += f.name + '\n';
         if(b.size == f.size && b.type == f.type){
             fileName = f.name;
