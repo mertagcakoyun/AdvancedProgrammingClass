@@ -16,7 +16,7 @@
 <p><b id=docName></b> &nbsp; <a href="Reading_files">Reference</a>
 </p>
 <p>Remote file <br>
-  <input type=text id=remote size=35 value="../images/objects.png">
+  <input type=text id=remote size=35 value="https://mertagcakoyun.github.io/AdvancedProgrammingClass/ClassWorks/CW08/pc.png">
 </p>
 <p><input type=file id=local multiple onChange='fileSelect()' /></p>  
 <pre id=out></pre>
@@ -31,10 +31,31 @@ function fileSelect() {
     .then(checkFiles) //called with Blob b
 }
 function checkFiles(b) {
-    let a = [...local.files]
-    //Implement this
-    out.innerText += 'Implement this '
+    let files = [...local.files]
+    let selectedFilesCount=0;
+    let selectedFilesNames="\nselected files: \n"
+    let isMatch = false
+    let fileName = ""
+
+    for(let f of files){
+        selectedFilesCount++;
+        selectedFilesNames += f.name + '\n';
+        if(b.size == f.size && b.type == f.type){
+            fileName = f.name;
+            isMatch = true;
+        }
+    }
+    if(isMatch){
+        let x = remote.value.split("/");
+        out.innerText = x[x.length-1]+ " is the same as " + fileName + "\n"
+    }else{
+        out.innerText = "all files are diffrent"
+    }
+    out.innerText+=selectedFilesNames
+    
 }
+
+
 const L = console.log
 docName.innerText = document.title
 sample.innerText = fileSelect+"\n"+checkFiles
