@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+
+    <title> Student Database and Timing </title>
+
+    <style>
+        body {
+            max-width: 440px;
+        }
+
+        .link {
+            color: blue;
+            cursor: pointer;
+            font-style: italic;
+        }
+
+        .liste {
+            visibility: hidden;
+            font: 11px arial, sans-serif;
+            color: white;
+            background: blue;
+            cursor: text;
+            padding: 6px;
+            position: absolute;
+            height: 116px;
+            overflow-y: auto;
+        }
+
+        .link:hover .liste {
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 id=title></h2>
+
+    <button onClick='randomStd()'>Random Student</button>
+    <button onClick='randomCrs()'>Random Course</button>
+    <button onClick='randomRm()'>Random Room</button>
+    <button onClick='clearAllOutput()'>Clear</button>
+
+    <div id="randomStudent" style="color: gray; margin-top: 15px;"></div>
+    <div id="randomCourse" style="color: gray; margin-top: 15px;"></div>
+    <div id="randomRoom" style="color: gray; margin-top: 15px;"></div>
+
+    <hr>
+    <h3>First Part</h3>
+
+    <div>
+        <h4>Get Exam Schedule</h4>
+        Student ID:
+        <input type=number id="stdID" style="max-width: 120px;">
+        <button id=" examBtn" onClick='getExamSchedule(stdID.value)'>Exam Schedule</button>
+        <div id="examSchedule" style="color: gray; margin-top: 15px;"></div>
+        <hr>
+    </div>
+
+    <div>
+        <h4>Get Student List of Course</h4>
+        Course ID:
+        <input type=text id="crsID" style="max-width: 120px;">
+        <button id="stdListBtn" onClick='getStudentList(crsID.value)'>Student List</button>
+        <button id="minGPABtn" style="background: red;" onClick='getMinGPAwithCourse(crsID.value)'>Min GPA in
+            Course</button>
+        <div id="studentList" style="color: gray; margin-top: 15px;"></div>
+        <div id="minGPAText" style="color: red; margin-top: 15px;"></div>
+
+        <hr>
+    </div>
+
+
+    <div>
+        <h4>Get Course Informations</h4>
+        Room ID:
+        <input id="roomCode" type=text style="max-width: 120px;">
+        <button id=" stdListBtn" onClick='getCourseNumberWithRoom(roomCode.value)'>Number of Course</button>
+        <button id="stdListBtn" onClick='getCourseListWithRoom(roomCode.value)'>Course List</button>
+        <div id="courseList" style="color: gray; margin-top: 15px;"></div>
+        <div id="courseCount" style="color: gray; margin-top: 15px;"></div>
+        <hr>
+    </div>
+
+    <div>
+        <h3>Second Part</h3>
+        Student ID:
+        <input type=number id="studentId" style="max-width: 120px;">
+        <button id="Results" onClick='secondPart(studentId.value)'> Result</button>
+        <div id="secondPartText" style="color: gray; margin-top: 15px;"></div>
+        <hr>
+
+    </div>
+
+
+    <p id=out onClick='doClick(event)'>Result:</p>
+    <hr />
+    <b>Sample code</b>
+    <pre id=sample></pre>
+    <hr />
+
+    <script>
+        "use strict";
+        class Student {
+            constructor(id, name, gpa, ...list) {
+                if (!id) throw "Undefined Student id"
+                this.id = id; this.name = name;
+                this.gpa = gpa.padEnd(4, '0');
+                this.list = list
+            }
+            toString() {
+                return this.id + ' ' + this.name + ' ' + this.gpa
+            }
+            static fromString(s) {
+                return new Student(...s.split('\t'))
+            }
+        }
+        class Course { //implement this
+            constructor(id, time, date, ...rooms) {
+                if (!id) throw "Undefined Course ID"
+                this.id = id;
+                this.time = time;
+                this.date = date;
+                this.rooms = rooms
+            }
+            toString() {
+                return this.id + " " + this.time + " " + this.date;
+            }
+            static fromString(s) {
+                return new Course(...s.split('\t'))
+            }
+        }
+
+
+
+        function report(msg, id, list) {
+            msg += " "; let txt = "<br>\n" + msg;
+            if (id) {
+                msg += id; txt += "<span class=link>" + id
+                if (list) txt += "<span class=liste>"
+                    + list.join("<br>") + "</span>"
+                txt += "</span>"
+            }
+            console.log(msg); out.innerHTML += txt;
+        }
+        const stdMap = new Map(), crsMap = new Map(); //global
+        function makeData(txt, Maker, map) {
+            map.clear()
+            for (let line of txt.split('\n')) {
+                if (!line) continue
+                let std = Maker.fromString(line)
+                map.set(std.id, std)
+            }
+            report(map.size + " items");
+            return map;
+        }
+        function doClick(evt) {
+            let s = evt.target.innerText;
+            //if s contains only digits
+            if (/^\d+$/.test(s)) showStudent(s);
+        }
+        function showStudent(id) {
+            let std = stdMap.get(id);
+            if (!std) return report(id + " not found");
+            let t = std.toString()
+            report(t, "(" + std.list.length + " courses)", std.list);
+            return std
+        }
+        function showCourse(id) {
+            id = id.toUpperCase();
+            let a = [];
+            for (let std of stdMap.values())
+                if (std.list.includes(id))
+                    a.push(std.id + " " + std.name);
+            if (a.length > 0) {
+                report(id + ": ", a.length + " students", a);
+                report("time: " + crsMap.get(id).time + "\ndate: " + crsMap.get(id).date)
+            }
+            else report("No students in " + id);
+            return a
+        }
+        function randomStd() {
+            let keys = [...stdMap.keys()]  //Iterable
+            console.assert(keys.length == stdMap.size)
+            let i = Math.trunc(keys.length * Math.random());
+            let b = stdMap.get(keys[i]);
+            randomStudent.innerHTML = "Random Student: " + b.id + " " + b.name + "<br>";
+        }
+        function randomCrs() {
+            let keys = [...crsMap.keys()]  //Iterable
+            console.assert(keys.length == crsMap.size)
+            let i = Math.trunc(keys.length * Math.random());
+            let b = crsMap.get(keys[i]);
+            randomCourse.innerHTML = "Random Course: " + b.id + "<br>";
+        }
+        function randomRm() {
+            var arr = Array.from(crsMap);
+            randomRoom.innerHTML = "Random Room: " + arr[[Math.floor(Math.random() * arr.length)]][1].rooms[0] + "<br>";
+        }
+        function findBest() { //the best gpa in stdMap
+            let best = 0
+            let name = ""
+            for (let s of stdMap.values()) {
+                if (s.gpa > best) {
+                    name = s.name
+                    best = s.gpa
+                }
+            }
+            report("Best GPA=>   Name: " + name + "    GPA: " + best);
+        }
+        function clearAllOutput() {
+            document.getElementById("stdID").value = "";
+            document.getElementById("crsID").value = "";
+            document.getElementById("roomCode").value = "";
+            document.getElementById("studentId").value = "";
+            studentList.innerText = "";
+            examSchedule.innerText = "";
+            courseCount.innerText = "";
+            randomRoom.innerText = "";
+            courseList.innerText = "";
+            minGPAText.innerText = "";
+            randomCourse.innerText = "";
+            randomStudent.innerText = "";
+
+        }
+
+        // Begining of Query Implementation
+
+        function getExamSchedule(studentID) {
+            examSchedule.innerHTML = "Exam Schedule <br>";
+            for (let s of stdMap.values()) {
+                if (s.id == studentID) {
+                    for (let c of s.list) {
+                        for (let cr of crsMap.values()) {
+                            if (c.includes(cr.id.toUpperCase())) {
+                                examSchedule.innerHTML += cr.id + " : " + cr.date + "  /  " + cr.time + " </br>"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function getStudentList(id) {
+            studentList.innerHTML = "Student List" + "<br>";
+            id = id.toUpperCase();
+            let a = [];
+            for (let std of stdMap.values())
+                if (std.list.includes(id))
+                    a.push(std.id + " " + std.name);
+            if (a.length > 0) {
+                for (let st of a)
+                    studentList.innerHTML += st + "<br>";
+            }
+            else studentList.innerHTML = "Undefined Course ID!";
+        }
+
+        function getCourseListWithRoom(roomKey) {
+            courseList.innerHTML = "Course List for: " + roomKey + "<br>";
+
+            for (let c of crsMap.values()) {
+                for (let r of c.rooms) {
+                    if (r.includes(roomKey.toUpperCase())) {
+                        courseList.innerHTML += c.id + "<br>";
+                    }
+                }
+            }
+        }
+        function getCourseNumberWithRoom(roomKey) {
+            courseCount.innerHTML = "";
+            let counter = 0;
+            for (let c of crsMap.values()) {
+                for (let r of c.rooms) {
+                    if (r.includes(roomKey.toUpperCase())) {
+                        counter++;
+                    }
+                }
+            }
+            courseCount.innerHTML = "Number of Course for " + roomKey
+                + " :  " + counter;
+
+        }
+
+        function getMinGPAwithCourse(courseID) {
+            // Finds the student that has a minimum GPA in Course
+            let minGPA = 4.0;
+            let minID = 0;
+            let minName = "";
+            for (let s of stdMap.values()) {
+                for (let c of s.list) {
+                    if (c.toUpperCase() == (courseID.toUpperCase())
+                        && s.gpa < minGPA) {
+                        minID = s.id;
+                        minName = s.name
+                        minGPA = s.gpa;
+                    }
+                }
+            }
+            if (minGPA < 4.0) {
+                minGPAText.innerHTML = "Min GPA for " + courseID.toUpperCase()
+                    + " => " + minID + " " + minName + " : " + minGPA + "<br>";
+
+            }
+            else { minGPAText.innerHTML = "Wrong course ID! <br>" }
+        }
+
+        // End of Query Implementation
+
+        // Second Part
+
+        function secondPart(stdID) {
+            secondPartText.innerText = "";
+            let keys = []
+            for (let std of stdMap)
+                keys.push(std[0]);
+
+            let keyCount = 0, mapCount = 0
+            let passingTimeOfKey = 0, passingTimeOfMap = 0
+
+            const startTimeOfMap = Date.now()
+            for (let i = 0; i < 10000; i++)
+                if (stdMap.has(stdID + i))
+                    mapCount++
+            passingTimeOfMap = Date.now() - startTimeOfMap
+
+
+            const startTimeOfKey = Date.now()
+            for (let i = 0; i < 10000; i++)
+                if (keys.includes(stdID + i))
+                    keyCount++
+
+            passingTimeOfKey = Date.now() - startTimeOfKey
+            secondPartText.innerHTML +=
+                'Keys time: ' + passingTimeOfKey + ' msec' +
+                `<br/>` + 'Maps time: ' + passingTimeOfMap + ' msec'
+
+
+
+        }
+
+
+        const LINK = "https://maeyler.github.io/JS/data/"
+        function readStudents() {
+            fetch(LINK + "Students.txt").then(r => r.text())
+                .then(t => makeData(t, Student, stdMap))
+        }
+        function readCourses() {
+            fetch(LINK + "Courses.txt").then(r => r.text())
+                .then(c => makeData(c, Course, crsMap))
+        }
+        title.innerText = document.title
+        sample.innerText = getStudentList + "\n" + getStudentList + "\n" + getCourseListWithRoom + "\n" + getCourseNumberWithRoom + "\n" + getMinGPAwithCourse + "\n" + secondPart
+        readStudents(); readCourses();
+    </script>
+</body>
+
+</html>
