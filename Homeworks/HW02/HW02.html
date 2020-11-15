@@ -313,30 +313,31 @@
         // Second Part
 
         function secondPart(stdID) {
+            //  create stdID with random student ıd button 
             secondPartText.innerText = "";
-            let keys = []
-            for (let std of stdMap)
-                keys.push(std[0]);
-
+            let keys = [...stdMap.keys()]
             let keyCount = 0, mapCount = 0
             let passingTimeOfKey = 0, passingTimeOfMap = 0
-
             const startTimeOfMap = Date.now()
-            for (let i = 0; i < 10000; i++)
-                if (stdMap.has(stdID + i))
-                    mapCount++
+
+            for (let i = 0; i < 10000; i++) {
+                if (stdMap.has(stdID + i)) {
+                    mapCount += 1;
+                }
+            }
+
             passingTimeOfMap = Date.now() - startTimeOfMap
-
-
             const startTimeOfKey = Date.now()
             for (let i = 0; i < 10000; i++)
                 if (keys.includes(stdID + i))
-                    keyCount++
+                    keyCount += 1;
 
             passingTimeOfKey = Date.now() - startTimeOfKey
             secondPartText.innerHTML +=
-                'Keys time: ' + passingTimeOfKey + ' msec' +
-                `<br/>` + 'Maps time: ' + passingTimeOfMap + ' msec'
+                "Keys time: " + passingTimeOfKey + " msec  -  " +
+                "Key Count: " + keyCount +
+                "<br/>" + 'Maps time: ' + passingTimeOfMap + " msec  -  " +
+                "Map Count: " + mapCount
 
 
 

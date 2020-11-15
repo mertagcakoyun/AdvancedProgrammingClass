@@ -14,4 +14,4 @@
 
 ## Homeworks
 <a href="https://mertagcakoyun.github.io/AdvancedProgrammingClass/Homeworks/HW01/HW01.html"> HW01 - Poisson Table </a> <br/>
-<a href="https://mertagcakoyun.github.io/AdvancedProgrammingClass/Homeworks/HW02/HW02.html"> HW02 - Database </a> <br/>
+<a href="https://mertagcakoyun.github.io/AdvancedProgrammingClass/Homeworks/HW02/HW02.html"> HW02 - Database and Timing </a> <br/>
