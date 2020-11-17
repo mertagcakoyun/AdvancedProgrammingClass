@@ -325,14 +325,17 @@
                     mapCount += 1;
                 }
             }
-
             passingTimeOfMap = Date.now() - startTimeOfMap
-            const startTimeOfKey = Date.now()
-            for (let i = 0; i < 10000; i++)
-                if (keys.includes(stdID + i))
-                    keyCount += 1;
 
+            const startTimeOfKey = Date.now()
+            for (let i = 0; i < 10000; i++) {
+                if (keys.includes(stdID + i)) {
+                    keyCount += 1;
+                }
+            }
             passingTimeOfKey = Date.now() - startTimeOfKey
+
+
             secondPartText.innerHTML +=
                 "Keys time: " + passingTimeOfKey + " msec  -  " +
                 "Key Count: " + keyCount +
