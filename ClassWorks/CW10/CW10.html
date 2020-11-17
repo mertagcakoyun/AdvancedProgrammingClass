@@ -69,12 +69,11 @@
             }
             shaFromURL(u) { //URL or string
                 //use fetch(u).then ...
-                return
-                subtle.digest('SHA-1', new TextEncoder()
-                    .encode(s.name)
-                    .then(x => [...new Uint8Array(x)].map(toHex)
-                        .join('')))
-
+                fetch(u).then(s =>
+                    subtle.digest('SHA-1', new TextEncoder()
+                        .encode(s.name)
+                        .then(x => [...new Uint8Array(x)].map(toHex)
+                            .join(''))))
             }
             shaFromString(txt) {
                 if (txt.startsWith('https://')) {
