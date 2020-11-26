@@ -104,7 +104,7 @@
     <hr />
 
     <script>
-        "use strict";
+
         class Student {
             constructor(id, name, gpa, ...list) {
                 if (!id) throw "Undefined Student id"
@@ -329,7 +329,7 @@
 
             const startTimeOfKey = Date.now()
             for (let i = 0; i < 10000; i++) {
-                if (keys.includes(stdID + i)) {
+                if (keys[i] == (stdID + i)) {
                     keyCount += 1;
                 }
             }
