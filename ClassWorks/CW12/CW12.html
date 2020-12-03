@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" href="../images/icon192.png">
+  <title>GitHub Users</title>
+  <style>
+    body {
+      max-width: 300px;
+    }
+
+    img {
+      padding-right: 12px;
+      width: 290px;
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2 id=title></h2>
+  <input type=text id=usr value=mertagcakoyun onChange="readUser()">
+  <br />
+  <p id=out></p>
+
+  <hr />
+
+  <script>
+    "use strict";
+    function error(t) {
+      out.style.color = 'red'
+      out.innerText = t; throw t
+    }
+    async function toJSON(url) {
+      let r = await fetch(url)
+      if (!r.ok) error(r.statusText)
+      return r.json()
+    }
+    async function readUser() {
+      const BR = "<BR>",
+        URL = "https://api.github.com/users/"
+      let u = await toJSON(URL + usr.value)
+      if (!u || !u.login)
+        error(usr.value + ' not found')
+      //u.login is the same as usr.value
+      out.style.color = ''
+      out.innerHTML = ''
+      //start with a tiny image
+      let i = document.createElement("img")
+      i.src = u.avatar_url
+      i.align = "left"
+      out.appendChild(i)
+
+      //add name and location
+      let s = (u.name ? u.name : u.login)
+      let l = u.login;
+      let loc = u.location
+      out.innerHTML += s.bold() + BR + l + BR + BR;
+      // add company to GitHub
+      let companyImage = document.createElement("img");
+      companyImage.src = "./company.png";
+      companyImage.style.maxHeight = "25px";
+      companyImage.style.maxWidth = "25px";
+      out.appendChild(companyImage);
+      let c = u.company;
+      out.innerHTML += c + BR;
+
+      //add location to GitHub
+      let locationImg = document.createElement("img");
+      locationImg.src = "./location2.png";
+      locationImg.style.maxHeight = "25px";
+      locationImg.style.maxWidth = "25px";
+      out.appendChild(locationImg);
+      out.innerHTML += loc + BR; console.log(s)
+
+      //add email to GitHub 
+      let emailImg = document.createElement("img");
+      emailImg.src = "./mail.png";
+      emailImg.style.maxHeight = "20px";
+      emailImg.style.maxWidth = "20px";
+
+      out.appendChild(emailImg);
+
+      let m = (u.email ? u.email : "Mail bilgisi bulunmamakta!");
+      let p2 = document.createElement("span");
+      let a2 = document.createElement("a")
+      a2.href = "https://" + m
+      a2.target = "NewTab"
+      a2.innerText = m
+      p2.innerText = m
+      if (m == "Mail bilgisi bulunmamakta!") {
+        p2.style.color = "red";
+        out.appendChild(p2);
+      } else
+        out.appendChild(a2);
+
+      out.innerHTML += BR;
+
+      //add link to GitHub 
+      let linkImg = document.createElement("img");
+      linkImg.src = "./link.png";
+      linkImg.style.maxHeight = "15px";
+      linkImg.style.maxWidth = "15px";
+      out.appendChild(linkImg);
+      let h = "github.com/" + u.login
+      let a1 = document.createElement("a")
+      a1.href = "https://" + h
+      a1.target = "NewTab"
+      a1.innerText = h
+      out.appendChild(a1)
+      out.innerHTML += BR;
+
+
+    }
+    title.innerText = document.title
+
+    out.innerText = "Reading data"
+    readUser()
+  </script>
+
+</body>
+
+</html>
