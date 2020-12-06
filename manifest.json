@@ -1,7 +1,7 @@
 {
   "name": "mertagcakoyun",
   "short_name": "mertagcakoyun",
-  "start_url": "JS.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "orange",
   "theme-color": "orange",
