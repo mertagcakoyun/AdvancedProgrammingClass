@@ -12,7 +12,7 @@
 <a href="https://mertagcakoyun.github.io/AdvancedProgrammingClass/ClassWorks/CW09/CW09.html"> CW09 - Page made by JS </a> <br/>
 <a href="https://mertagcakoyun.github.io/AdvancedProgrammingClass/ClassWorks/CW10/CW10.html"> CW10 - ArrayBuffer & Crypto </a> <br/>
 <a href="https://mertagcakoyun.github.io/AdvancedProgrammingClass/ClassWorks/CW11/CW11.html"> CW11 - Event Listeners </a> <br/>
-<a href="https://mertagcakoyun.github.io/AdvancedProgrammingClass/ClassWorks/CW12/CW12.html"> CW12 - GitHub user API </a> <br/>
+<a href="https://mertagcakoyun.github.io/AdvancedProgrammingClass/ClassWorks/CW12/CW12v2.html"> CW12 - GitHub user API </a> <br/>
 
 
 ## Homeworks
