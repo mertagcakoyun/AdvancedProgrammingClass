@@ -70,9 +70,9 @@
 
         function animate() {
             current.update()
-            let { elt, anim, time } = current
-            current.aa = elt.animate(anim, time)
-            current.id = setTimeout(animate, time)
+            let e = current.elt
+            current.aa = e.animate(current.anim, current.time)
+            current.id = setTimeout(animate, current.time)
             run.innerText = '||'
         }
         function pause() {
@@ -131,7 +131,7 @@
                 let n = x.name.length   //remove '.js'
                 NAMES.push(x.name.substring(0, n - 3))
             }
-            NAMES.push('Race_mertAgcakoyun')
+            NAMES.push("Ball.js")
             menu.innerHTML = '<option disabled selected>Options:'
                 + NAMES.join('<option>')
         }

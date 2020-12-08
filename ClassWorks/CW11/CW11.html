@@ -59,7 +59,7 @@
       //write your code here
       let b;
       navigator.getBattery().then(b => {
-        b.onchargingchange = () => chargingStat.innerText = (b.charging ? "Charging" : "Discharging")
+        b.onchargingchange = () => chargingStat.innerText = (b.chargin ? "Charging" : "Discharging")
 
         b.onlevelchange = () => level.innerText = (b.level * 100)
           .toFixed(0) + "%"
